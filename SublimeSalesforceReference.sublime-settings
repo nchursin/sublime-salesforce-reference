@@ -47,5 +47,6 @@
         "refreshCacheOnLoad": false,
         "excludeFromAllDocumentationCommand": false
       }
-    }
+    },
+    "default_browser": ""
 }

@@ -167,4 +167,22 @@ class RetrieveIndexThread(threading.Thread):
                     url = self.doc_type.doc_base_url + entry.url
 
             if url:
-                webbrowser.open_new_tab(url)
+                open_new_tab = self.get_browser_open()
+                open_new_tab(url)
+
+    def get_browser_open(self):
+        defaults = sublime.load_settings('Default.sublime-settings')
+        settings = sublime.load_settings('SublimeSalesforceReference.sublime-settings')
+        platform = sublime.platform()
+        default_browser = settings.get('default_browser', defaults.get('default_browser'))
+        if default_browser:
+            if platform == 'osx':
+                browser_path = 'open -a ' + "\"%s\"" % default_browser
+            else:
+                browser_path = "\"%s\"" % default_browser
+            browser_path += ' %s'
+            open_new_tab = webbrowser.get(browser_path).open_new_tab
+        else:
+            open_new_tab = webbrowser.open_new_tab
+
+        return open_new_tab
